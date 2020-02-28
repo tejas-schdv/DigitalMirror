@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -45,15 +46,22 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
 
     @Override
     public void onItemClicked(int index) {
+        Class newclass = null;
         String module = modules.get(index).getName();
-        String newActivity = "com.example.digitalmirror." + module + ".class";
+        String newActivity = "com.example.digitalmirror." + module;
         Intent intent = null;
         try {
-            intent = new Intent(AddWidgets.this, Class.forName(newActivity));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            newclass = Class.forName(newActivity);
+        } catch (ClassNotFoundException c) {
+            c.printStackTrace();
         }
-        startActivity(intent);
+
+        if(newclass != null) {
+            intent = new Intent(AddWidgets.this, newclass);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(),"ERROR: Class not found.",Toast.LENGTH_SHORT).show();
+        }
     }
 
 
