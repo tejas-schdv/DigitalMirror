@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "146884840365",
+    "firebase_url": "https://digitalmirror-a9941.firebaseio.com",
+    "project_id": "digitalmirror-a9941",
+    "storage_bucket": "digitalmirror-a9941.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146884840365:android:355b518064cb2d3c2eaf24",
+        "android_client_info": {
+          "package_name": "com.example.digitalmirror"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146884840365-noo3jmnr712e0nc4tujsl22tld0piogm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.digitalmirror",
+            "certificate_hash": "4855388a91833160a9e03ecaeee8a2289e58ecbb"
+          }
+        },
+        {
+          "client_id": "146884840365-8fgu1hdo3pvmtblovh9ndoqeoevdrljk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQK89YFtg-LOGWPyEzF1pCVBj2i1pdSyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146884840365-8fgu1hdo3pvmtblovh9ndoqeoevdrljk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
