@@ -1,11 +1,13 @@
 package com.example.digitalmirror;
 
+import android.widget.CheckBox;
+
 public class Module {
     private String name;
     private String logo;
-    private String checkBox;
+    private CheckBox checkBox;
 
-    public Module(String name, String logo, String checkBox) {
+    public Module(String name, String logo, CheckBox checkBox) {
         this.name = name;
         this.logo = logo;
         this.checkBox = checkBox;
@@ -27,11 +29,22 @@ public class Module {
         this.logo = logo;
     }
 
-    public String getCheckBox() {
-        return checkBox;
+    public boolean getCheckBoxValue() {
+        return checkBox.isChecked();
     }
 
-    public void setCheckBox(String checkBox) {
+    public CheckBox getCheckBox(){
+        return this.checkBox;
+    }
+
+    public void setCheckBox(CheckBox checkBox){
         this.checkBox = checkBox;
+    }
+
+    public void setCheckBoxValue(boolean bool) {
+        if (bool)
+            this.checkBox.setChecked(true);
+        else
+            this.checkBox.setChecked(false);
     }
 }

@@ -5,22 +5,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder> {
+    DatabaseReference database;
 
     private ArrayList<Module> modules;
     ItemClicked activity;
 
+
     public interface ItemClicked{
         void onItemClicked(int index);
     }
+
 
     public ModuleAdapter(Context context, ArrayList<Module>list){
         modules = list;
@@ -40,6 +51,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
             tvName = itemView.findViewById(R.id.tvName);
             checkBox = itemView.findViewById(R.id.checkBox);
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -56,16 +68,80 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ModuleAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ModuleAdapter.ViewHolder holder, final int position) {
         holder.itemView.setTag(modules.get(position));
         holder.tvName.setText(modules.get(position).getName());
 
+
         if(modules.get(position).getLogo().equals("clock")){
             holder.ivLogo.setImageResource(R.drawable.clock);
+
+            //write checkbox value to database
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    database = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("enabled");
+                    if(isChecked){
+                        database.setValue("true");
+                    }
+                    else{
+                        database.setValue("false");
+                    }
+                }
+            });
+
+            //read checkbox value from database
+            database = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("enabled");
+            database.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue().toString().equals("true")) {
+                        holder.checkBox.setChecked(true);
+                    } else {
+                        holder.checkBox.setChecked(false);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
         }
         else if(modules.get(position).getLogo().equals("weather")){
             holder.ivLogo.setImageResource(R.drawable.weather);
+
+            //write checkbox value to database
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    database = FirebaseDatabase.getInstance().getReference().child("modules").child("weather").child("enabled");
+                    if(isChecked){
+                        database.setValue("true");
+                    }
+                    else{
+                        database.setValue("false");
+                    }
+                }
+            });
+
+            //read checkbox value from database
+            database = FirebaseDatabase.getInstance().getReference().child("modules").child("weather").child("enabled");
+            database.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue().toString().equals("true")) {
+                        holder.checkBox.setChecked(true);
+                    } else {
+                        holder.checkBox.setChecked(false);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
         }
+
+
+
     }
 
     @Override

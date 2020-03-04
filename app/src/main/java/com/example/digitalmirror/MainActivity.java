@@ -30,11 +30,11 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     //weather variables
-    DatabaseReference database;
+    DatabaseReference database, databaseClock, databaseWeather;
     String CITY = "dhaka,bd";
     String API = "ebe86c447a46a73e12d63b0def7ba170";
     ImageView ivWeather, ivWind;
-    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind;
+    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock;
 
     Button btnSettings;
 
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-
+        //START WEATHER MODULE
         ivWeather = findViewById(R.id.ivWeather);
         ivWind = findViewById(R.id.ivWind);
 
@@ -53,22 +53,68 @@ public class MainActivity extends AppCompatActivity {
         tvTempMax = findViewById(R.id.tvTempMax);
         tvTempMin = findViewById(R.id.tvTempMin);
         tvWind = findViewById(R.id.tvWind);
+
         btnSettings = findViewById(R.id.btnSettings);
 
         new weatherTask().execute();
 
+        databaseWeather = FirebaseDatabase.getInstance().getReference().child("modules").child("weather").child("enabled");
+        databaseWeather.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue().toString().equals("false"))
+                {
+                    tvStatus.setVisibility(View.GONE);
+                    tvTemp.setVisibility(View.GONE);
+                    tvTempMax.setVisibility(View.GONE);
+                    tvTempMin.setVisibility(View.GONE);
+                    tvWind.setVisibility(View.GONE);
+                    ivWind.setVisibility(View.GONE);
+                    ivWeather.setVisibility(View.GONE);
+                }
+                else{
+                    tvStatus.setVisibility(View.VISIBLE);
+                    tvTemp.setVisibility(View.VISIBLE);
+                    tvTempMax.setVisibility(View.VISIBLE);
+                    tvTempMin.setVisibility(View.VISIBLE);
+                    tvWind.setVisibility(View.VISIBLE);
+                    ivWind.setVisibility(View.VISIBLE);
+                    ivWeather.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //END WEATHER MODULE
         
 
-        //clock variables
+        //START CLOCK MODULE
         final String currentTime = java.text.DateFormat.getTimeInstance().format(new Date());
-
-
-
-
-        //if() //if clock checkbox is checked
-        TextClock clock;
         clock = findViewById(R.id.tvClock);
         clock.setText(currentTime);
+
+        databaseClock = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("enabled");
+        databaseClock.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue().toString().equals("false")) {
+                    clock.setVisibility(View.GONE);
+                }
+                else{
+                    clock.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //might delete this vvvv
         database = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("time");
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,9 +131,21 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        //END CLOCK MODULE
 
+        //START EMAIL MODULE
+        //END EMAIL MODULE
 
+        //START DATE MODULE
+        //END DATE MODULE
 
+        //START NEWS MODULE
+        //END NEWS MODULE
+
+        //START NOTIFICATION MODULE
+        //END NOTIFICATION MODULE
+
+        //SETTING BUTTON
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
