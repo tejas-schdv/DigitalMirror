@@ -26,5 +26,80 @@
         android:layout_alignParentBottom="true"
         android:text="Settings" />
 
+    <ImageView
+        android:id="@+id/ivWeather"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/tvClock"
+        app:srcCompat="@drawable/cloud" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivWeather"
+        android:textColor="@android:color/white"
+        android:text="Status" />
+
+    <TextView
+        android:id="@+id/tvTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClock"
+        android:layout_toRightOf="@+id/ivWeather"
+        android:textSize="50sp"
+        android:textColor="@android:color/white"
+        android:text="00° C" />
+
+    <TextView
+        android:id="@+id/tvTempMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClock"
+        android:layout_toRightOf="@+id/tvTemp"
+        android:textSize="25sp"
+        android:textColor="@android:color/white"
+        android:text="Min: 00°" />
+
+    <TextView
+        android:id="@+id/tvTempMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTempMin"
+        android:layout_toRightOf="@+id/tvTemp"
+        android:textSize="25sp"
+        android:textColor="@android:color/white"
+        android:text="Max: 00°" />
+
+    <TextView
+        android:id="@+id/tvPressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/tvHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="" />
+
+    <ImageView
+        android:id="@+id/ivWind"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/tvStatus"
+        app:srcCompat="@drawable/wind" />
+
+    <TextView
+        android:id="@+id/tvWind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvStatus"
+        android:layout_toRightOf="@+id/ivWind"
+        android:textColor="@android:color/white"
+        android:text="(wind info)" />
+
 
 </RelativeLayout>

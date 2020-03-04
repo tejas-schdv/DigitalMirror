@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Weather">
+
+    <TextView
+        android:id="@+id/tvWeather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:text="Weather"
+        android:textSize="60sp" />
+
+    <EditText
+        android:id="@+id/etAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWeather"
+        android:text="Address: "/>
+
+    <Button
+        android:id="@+id/setAddress"
+        android:layout_below="@+id/etAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set" />
+</RelativeLayout>
