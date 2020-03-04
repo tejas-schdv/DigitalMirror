@@ -34,7 +34,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
 
         modules = new ArrayList<Module>();
 
-        modules.add(new Module("Clock", "clock", "true"));
+        modules.add(new Module("Clock", "clock", "false"));
+        modules.add(new Module("Weather", "weather", "false"));
 
         myAdapter = new ModuleAdapter(this, modules);
 

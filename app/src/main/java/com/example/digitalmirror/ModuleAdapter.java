@@ -63,6 +63,9 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
         if(modules.get(position).getLogo().equals("clock")){
             holder.ivLogo.setImageResource(R.drawable.clock);
         }
+        else if(modules.get(position).getLogo().equals("weather")){
+            holder.ivLogo.setImageResource(R.drawable.weather);
+        }
     }
 
     @Override

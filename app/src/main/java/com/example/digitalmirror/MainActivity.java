@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         new weatherTask().execute();
 
+        
+
         //clock variables
         final String currentTime = java.text.DateFormat.getTimeInstance().format(new Date());
 
