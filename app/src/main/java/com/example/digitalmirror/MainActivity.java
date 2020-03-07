@@ -31,12 +31,12 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     //weather variables
     DatabaseReference database, databaseClock, databaseWeather;
-    String CITY = "dhaka,bd";
+    String CITY, STATE, ADDRESS; //= "santa paula,ca,us";
     String API = "ebe86c447a46a73e12d63b0def7ba170";
     ImageView ivWeather, ivWind;
     TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock;
 
-    Button btnSettings;
+    Button btnSettings, btnSetAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //START WEATHER MODULE
+        databaseWeather = FirebaseDatabase.getInstance().getReference().child("modules").child("weather");
         ivWeather = findViewById(R.id.ivWeather);
         ivWind = findViewById(R.id.ivWind);
 
@@ -56,10 +57,22 @@ public class MainActivity extends AppCompatActivity {
 
         btnSettings = findViewById(R.id.btnSettings);
 
-        new weatherTask().execute();
+        DatabaseReference dbWeatherAddress = databaseWeather.child("address");
+        dbWeatherAddress.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ADDRESS = dataSnapshot.getValue().toString();
+                new weatherTask().execute();
+            }
 
-        databaseWeather = FirebaseDatabase.getInstance().getReference().child("modules").child("weather").child("enabled");
-        databaseWeather.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference dbWeatherEnabled = databaseWeather.child("enabled");
+        dbWeatherEnabled.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue().toString().equals("false"))
@@ -133,8 +146,18 @@ public class MainActivity extends AppCompatActivity {
         });
         //END CLOCK MODULE
 
+        //START TWITTER MODULE (Hashtags)
+        //END TWITTER MODULE
+
+        //START DATE MODULE
+        //END DATE MODULE
+
         //START EMAIL MODULE
         //END EMAIL MODULE
+
+
+        //The above done by tuesday
+
 
         //START DATE MODULE
         //END DATE MODULE
@@ -167,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected String doInBackground(String... args) {
-            String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric&appid=" + API);
+            String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + ADDRESS + "&units=metric&appid=" + API);
             return response;
         }
 

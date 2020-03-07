@@ -17,15 +17,23 @@
         android:textSize="60sp" />
 
     <EditText
-        android:id="@+id/etAddress"
+        android:id="@+id/etCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvWeather"
-        android:text="Address: "/>
+        android:hint="City"/>
+
+    <EditText
+        android:id="@+id/etState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etCity"
+        android:hint="State" />
+
 
     <Button
-        android:id="@+id/setAddress"
-        android:layout_below="@+id/etAddress"
+        android:id="@+id/btnSetAddress"
+        android:layout_below="@+id/etState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set" />
