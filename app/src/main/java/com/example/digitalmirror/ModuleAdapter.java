@@ -139,6 +139,39 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
                 }
             });
         }
+        else if(modules.get(position).getLogo().equals("date")){
+            holder.ivLogo.setImageResource(R.drawable.date);
+
+            //write checkbox value to database
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    database = FirebaseDatabase.getInstance().getReference().child("modules").child("date").child("enabled");
+                    if(isChecked){
+                        database.setValue("true");
+                    }
+                    else{
+                        database.setValue("false");
+                    }
+                }
+            });
+
+            //read checkbox value from database
+            database = FirebaseDatabase.getInstance().getReference().child("modules").child("date").child("enabled");
+            database.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue().toString().equals("true")) {
+                        holder.checkBox.setChecked(true);
+                    } else {
+                        holder.checkBox.setChecked(false);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
 
 
 

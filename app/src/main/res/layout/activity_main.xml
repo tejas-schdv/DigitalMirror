@@ -9,10 +9,19 @@
     android:background="@android:color/black"
     android:id="@+id/parentP">
 
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monday, 00 January, 0000"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"/>
+
     <TextClock
         android:id="@+id/tvClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDate"
         android:text="00:00 AM"
         android:textColor="@android:color/white"
         android:textSize="50sp"/>

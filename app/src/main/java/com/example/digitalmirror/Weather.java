@@ -86,7 +86,6 @@ public class Weather extends AppCompatActivity {
                     toast.show();
                 }
 
-
             } catch (JSONException e) {
                 Toast toast=Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_SHORT);
                 toast.show();

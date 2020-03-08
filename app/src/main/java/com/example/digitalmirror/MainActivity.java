@@ -25,16 +25,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     //weather variables
-    DatabaseReference database, databaseClock, databaseWeather;
+    DatabaseReference database, databaseClock, databaseWeather, databaseDate;
     String CITY, STATE, ADDRESS; //= "santa paula,ca,us";
     String API = "ebe86c447a46a73e12d63b0def7ba170";
     ImageView ivWeather, ivWind;
-    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock;
+    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate;
 
     Button btnSettings, btnSetAddress;
 
@@ -146,21 +148,124 @@ public class MainActivity extends AppCompatActivity {
         });
         //END CLOCK MODULE
 
+        //START DATE MODULE
+        tvDate = findViewById(R.id.tvDate);
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        String dayOfWeek = "null";
+
+        switch (day) {
+            case Calendar.SUNDAY:
+                dayOfWeek = "Sunday";
+                break;
+            case Calendar.MONDAY:
+                dayOfWeek = "Monday";
+                break;
+            case Calendar.TUESDAY:
+                dayOfWeek = "Tuesday";
+                break;
+            case Calendar.WEDNESDAY:
+                dayOfWeek = "Wednesday";
+                break;
+            case Calendar.THURSDAY:
+                dayOfWeek = "Thursday";
+                break;
+            case Calendar.FRIDAY:
+                dayOfWeek = "Friday";
+                break;
+            case Calendar.SATURDAY:
+                dayOfWeek = "Saturday";
+                break;
+        }
+
+        SimpleDateFormat monthFormatter = new SimpleDateFormat("MM");
+        Date dateMonth = new Date();
+        String monthNumber = monthFormatter.format(dateMonth);
+        String month;
+        switch (monthNumber) {
+            case "01":
+                month = "January";
+                break;
+            case "02":
+                month = "February";
+                break;
+            case "03":
+                month = "March";
+                break;
+            case "04":
+                month = "April";
+                break;
+            case "05":
+                month = "May";
+                break;
+            case "06":
+                month = "June";
+                break;
+            case "07":
+                month = "July";
+                break;
+            case "08":
+                month = "August";
+                break;
+            case "09":
+                month = "September";
+                break;
+            case "10":
+                month = "October";
+                break;
+            case "11":
+                month = "November";
+                break;
+            case "12":
+                month = "December";
+                break;
+            default:
+                month = "ERROR";
+                break;
+        }
+
+        SimpleDateFormat dayFormatter = new SimpleDateFormat("dd");
+        Date dateDay = new Date();
+        String dayNumber = monthFormatter.format(dateDay);
+
+        SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
+        Date dateYear = new Date();
+        String yearNumber = yearFormatter.format(dateYear);
+
+        String dateForm = dayOfWeek + ", " + month + " " + dayNumber + ", " + yearNumber;
+        tvDate.setText(dateForm);
+
+        databaseDate = FirebaseDatabase.getInstance().getReference().child("modules").child("date");
+        DatabaseReference dbDateEnabled = databaseDate.child("enabled");
+        dbDateEnabled.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue().toString().equals("false"))
+                {
+                    tvDate.setVisibility(View.GONE);
+                }
+                else{
+                    tvDate.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //END DATE MODULE
+
         //START TWITTER MODULE (Hashtags)
         //END TWITTER MODULE
 
-        //START DATE MODULE
-        //END DATE MODULE
+
 
         //START EMAIL MODULE
         //END EMAIL MODULE
 
 
         //The above done by tuesday
-
-
-        //START DATE MODULE
-        //END DATE MODULE
 
         //START NEWS MODULE
         //END NEWS MODULE

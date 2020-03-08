@@ -28,7 +28,7 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
     Button btnBack;
 
     ArrayList<Module> modules;
-    CheckBox checkBoxClock, checkBoxWeather;
+    CheckBox checkBoxClock, checkBoxWeather, checkBoxDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,28 +44,13 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
 
         modules = new ArrayList<Module>();
 
+        modules.add(new Module("Date", "date", checkBoxDate));
         modules.add(new Module("Clock", "clock", checkBoxClock));
         modules.add(new Module("Weather", "weather", checkBoxWeather));
 
         myAdapter = new ModuleAdapter(this, modules);
 
         recyclerView.setAdapter(myAdapter);
-
-
-       /* modules.get(0).setCheckBox(checkBoxClock);
-        checkBoxClock = modules.get(0).getCheckBox();
-
-        checkBoxClock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                    Toast.makeText(AddWidgets.this, "checked", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
-
-
-
     }
 
     @Override
