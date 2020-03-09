@@ -28,7 +28,7 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
     Button btnBack;
 
     ArrayList<Module> modules;
-    CheckBox checkBoxClock, checkBoxWeather, checkBoxDate;
+    CheckBox checkBoxClock, checkBoxWeather, checkBoxDate, checkBoxCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
         modules.add(new Module("Date", "date", checkBoxDate));
         modules.add(new Module("Clock", "clock", checkBoxClock));
         modules.add(new Module("Weather", "weather", checkBoxWeather));
+        modules.add(new Module("Calendar", "calendar", checkBoxCalendar));
 
         myAdapter = new ModuleAdapter(this, modules);
 

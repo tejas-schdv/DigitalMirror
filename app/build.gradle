@@ -33,4 +33,5 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.github.androdocs:Simple-HTTP-Request:v1.0'
 
+    implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
 }

@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
 
         SimpleDateFormat dayFormatter = new SimpleDateFormat("dd");
         Date dateDay = new Date();
-        String dayNumber = monthFormatter.format(dateDay);
+        String dayNumber = dayFormatter.format(dateDay);
 
         SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
         Date dateYear = new Date();
