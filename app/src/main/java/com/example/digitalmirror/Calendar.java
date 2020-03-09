@@ -145,6 +145,7 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
 
                 //create new method and call it to return list of events
                 calendarEvents.clear();
+                compactCalendar.removeAllEvents();
                 getMonthEvents(firstDayOfNewMonth);
                 Toast toast=Toast.makeText(getApplicationContext(),"DONE",Toast.LENGTH_SHORT);
                 toast.show();
@@ -229,12 +230,13 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
                         long l = Long.parseLong(eventTimestamp);
                         String date1 = new java.text.SimpleDateFormat("E, MMM dd, yyyy").format(new java.util.Date(l));
 
-                        //add to calenderview
+                        //add to claendar event
                         String id = event.getKey();
                         calendarEvents.add(new CalendarEvent(id, eventTitle, eventColor, date1, btnDeleteEvent));
 
-                        //Set an event for Teachers' Professional Day 2016 which is 21st of October
-                        Event eve = new Event(Color.RED, Long.parseLong(eventTimestamp), eventTitle);
+                        //add to calendarview
+                        int color = getColorfromString(eventColor);
+                        Event eve = new Event(color, Long.parseLong(eventTimestamp), eventTitle);
                         compactCalendar.addEvent(eve);
                     }
                     myAdapter = new CalendarEventAdapter(context, calendarEvents);
@@ -254,5 +256,34 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
         });
 
         return monthEvents;
+    }
+
+    public int getColorfromString(String color){
+        int returnColor;
+
+        switch (color){
+            case "red":
+                returnColor = Color.RED;
+                break;
+            case "green":
+                returnColor = Color.GREEN;
+                break;
+            case "blue":
+                returnColor = Color.BLUE;
+                break;
+            case "purple":
+                returnColor = Color.rgb(176, 66, 245);
+                break;
+            case "yellow":
+                returnColor = Color.YELLOW;
+                break;
+            case "orange":
+                returnColor = Color.rgb(245, 144, 66);
+                break;
+            default:
+                returnColor = Color.GRAY;
+                break;
+        }
+        return returnColor;
     }
 }

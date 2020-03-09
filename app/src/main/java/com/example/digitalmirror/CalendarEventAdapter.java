@@ -74,18 +74,24 @@ public class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdap
     public void onBindViewHolder(@NonNull final CalendarEventAdapter.ViewHolder holder, final int position) {
         holder.itemView.setTag(calendarEvents.get(position));
         holder.tvEventName.setText(calendarEvents.get(position).getEventName());
-        //String imageResource = "R.drawable." + calendarEvents.get(position).getDotColor();
-        //holder.ivDot.setImageResource(imageResource);
-
 
         if(calendarEvents.get(position).getDotColor().equals("red")){
             holder.ivDot.setImageResource(R.drawable.red);
         }
         else if(calendarEvents.get(position).getDotColor().equals("blue")){
-            holder.ivDot.setImageResource(R.drawable.red);
+            holder.ivDot.setImageResource(R.drawable.blue);
         }
         else if(calendarEvents.get(position).getDotColor().equals("yellow")){
-            holder.ivDot.setImageResource(R.drawable.red);
+            holder.ivDot.setImageResource(R.drawable.yellow);
+        }
+        else if(calendarEvents.get(position).getDotColor().equals("green")){
+            holder.ivDot.setImageResource(R.drawable.green);
+        }
+        else if(calendarEvents.get(position).getDotColor().equals("purple")){
+            holder.ivDot.setImageResource(R.drawable.purple);
+        }
+        else if(calendarEvents.get(position).getDotColor().equals("orange")){
+            holder.ivDot.setImageResource(R.drawable.orange);
         }
 
         database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
