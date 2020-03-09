@@ -40,14 +40,26 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvEventDateCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="-20dp"
+                    android:textSize="15sp"
+                    android:text="Mon, Jan 01, 2020"
+                    />
+
+                <TextView
                     android:id="@+id/tvEventName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_below="@id/tvEventDateCard"
                     android:textSize="25sp"
                     android:textColor="@android:color/black"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
 
-                    android:gravity="center_vertical"
                     android:text="Event Name" />
 
                 <Button

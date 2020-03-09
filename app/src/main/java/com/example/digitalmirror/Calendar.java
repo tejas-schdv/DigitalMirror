@@ -123,11 +123,6 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
         calendarEvents = new ArrayList<CalendarEvent>();
 
 
-
-
-
-
-
         // define a listener to receive callbacks when certain events happen.
         compactCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
@@ -147,8 +142,6 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
                 calendarEvents.clear();
                 compactCalendar.removeAllEvents();
                 getMonthEvents(firstDayOfNewMonth);
-                Toast toast=Toast.makeText(getApplicationContext(),"DONE",Toast.LENGTH_SHORT);
-                toast.show();
             }
         });
 
@@ -156,9 +149,10 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Calendar.this, com.example.digitalmirror.AddCalendarEvent.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("bundle", date);
-                intent.putExtras(bundle);
+                Bundle bundleNew = new Bundle();
+                bundleNew.putString("bundle", date);
+                bundleNew.putString("new", "new");
+                intent.putExtras(bundleNew);
                 startActivity(intent);
             }
         });
@@ -170,7 +164,17 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
         Bundle bundle = new Bundle();
         //pass date of event
         String eventDate = calendarEvents.get(index).getEventDate();
-        bundle.putString("bundle", eventDate);
+        String eventTitle = calendarEvents.get(index).getEventName();
+        String eventColor = calendarEvents.get(index).getDotColor();
+        String eventDescription = calendarEvents.get(index).getEventDescription();
+        String id = calendarEvents.get(index).getID();
+
+        bundle.putString("edit", "edit");
+        bundle.putString("eventDate", eventDate);
+        bundle.putString("eventTitle", eventTitle);
+        bundle.putString("eventColor", eventColor);
+        bundle.putString("eventDescription", eventDescription);
+        bundle.putString("eventID", id);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -226,13 +230,14 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
                         String eventTitle = event.child("title").getValue().toString();
                         String eventTimestamp = event.child("timestamp").getValue().toString();
                         String eventColor = event.child("color").getValue().toString();
+                        String eventDescription = event.child("description").getValue().toString();
 
                         long l = Long.parseLong(eventTimestamp);
                         String date1 = new java.text.SimpleDateFormat("E, MMM dd, yyyy").format(new java.util.Date(l));
 
                         //add to claendar event
                         String id = event.getKey();
-                        calendarEvents.add(new CalendarEvent(id, eventTitle, eventColor, date1, btnDeleteEvent));
+                        calendarEvents.add(new CalendarEvent(id, eventTitle, eventColor, date1, eventDescription, btnDeleteEvent));
 
                         //add to calendarview
                         int color = getColorfromString(eventColor);

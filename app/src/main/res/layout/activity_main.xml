@@ -110,5 +110,35 @@
         android:textColor="@android:color/white"
         android:text="(wind info)" />
 
+    <TextView
+        android:id="@+id/tvEventsToday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="58dp"
+
+        android:textColor="@android:color/white"
+        android:text="Today" />
+
+    <TextView
+        android:id="@+id/tvEventsTodayDivider"
+        android:layout_width="100dp"
+        android:layout_height="2dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tvEventsToday"
+        android:background="@android:color/white"
+        />
+
+    <TextView
+        android:id="@+id/tvEventsTodayList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEventsTodayDivider"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="580dp"
+        android:textColor="@android:color/white"
+        android:text="Events this is a test comply one two tjree four five six" />
+
 
 </RelativeLayout>

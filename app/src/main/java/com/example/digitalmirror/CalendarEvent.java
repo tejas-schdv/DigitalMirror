@@ -7,14 +7,16 @@ public class CalendarEvent {
     private String eventName;
     private String dotColor;
     private String eventDate;
+    private String eventDescription;
     private Button btnDeleteEvent;
     private String id;
 
-    public CalendarEvent(String id, String eventName, String dotColor, String eventDate, Button btnDeleteEvent) {
+    public CalendarEvent(String id, String eventName, String dotColor, String eventDate, String eventDescription, Button btnDeleteEvent) {
         this.id = id;
         this.eventName = eventName;
         this.dotColor = dotColor;
         this.eventDate = eventDate;
+        this.eventDescription = eventDescription;
         this.btnDeleteEvent = btnDeleteEvent;
     }
 
@@ -32,6 +34,14 @@ public class CalendarEvent {
 
     public void setDotColor(String dotColor) {
         this.dotColor = dotColor;
+    }
+
+    public void setEventDescription(String eventDescription){
+        this.eventDescription = eventDescription;
+    }
+
+    public String getEventDescription(){
+        return this.eventDescription;
     }
 
     public void setEventDate(String eventDate){

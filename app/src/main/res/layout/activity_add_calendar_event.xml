@@ -79,6 +79,20 @@
         android:layout_below="@+id/tvEventTitle"
         />
 
+    <TextView
+        android:id="@+id/tvEventDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEventTitle"
+        android:layout_marginTop="10dp"
+        android:text="Event Description" />
+
+    <EditText
+        android:id="@+id/etEventDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvEventDescription"
+        android:hint="Description"/>
 
 
 </RelativeLayout>

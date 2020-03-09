@@ -31,16 +31,17 @@ public class AddCalendarEvent extends AppCompatActivity implements AdapterView.O
 
     Button btnExit, btnSave;
     TextView tvNewEvent, tvEventDate, tvEventDateSet;
-    EditText etEventTitle;
+    EditText etEventTitle, etEventDescription;
     Spinner spinner;
-    DatabaseReference database;
+    DatabaseReference database, databaseEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_calendar_event);
-
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
 
         btnExit = findViewById(R.id.btnExit);
@@ -49,48 +50,94 @@ public class AddCalendarEvent extends AppCompatActivity implements AdapterView.O
         tvEventDate = findViewById(R.id.tvEventDate);
         tvEventDateSet = findViewById(R.id.tvEventDateSet);
         etEventTitle = findViewById(R.id.etEventTitle);
+        etEventDescription = findViewById(R.id.etEventDescription);
+
+        spinner = findViewById(R.id.spinnerColor);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.colors_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
         database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
 
+        //editing existing event
         Bundle bundle = getIntent().getExtras();
-        final String stringDate = bundle.getString("bundle");
+        final String isEdit = bundle.getString("edit");
+        final String stringID = bundle.getString("eventID");
+        if(isEdit != null) {
+            final String stringDate = bundle.getString("eventDate");
+            final String stringTitle = bundle.getString("eventTitle");
+            final String stringColor = bundle.getString("eventColor");
+            final String stringDescription = bundle.getString("eventDescription");
 
-        tvEventDateSet.setText(stringDate);
+            tvEventDateSet.setText(stringDate);
+            etEventTitle.setText(stringTitle);
+            etEventDescription.setText(stringDescription);
+            spinner.setPrompt(stringColor);
+        }
 
-        spinner = findViewById(R.id.spinnerColor);
-// Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.colors_array, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
+        //adding new event
+        Bundle bundleNew = getIntent().getExtras();
+        final String isNew = bundleNew.getString("new");
+        if(isNew != null) {
+            final String strDate = bundleNew.getString("bundle");
+            tvEventDateSet.setText(strDate);
+        }
 
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String eventTitle = etEventTitle.getText().toString();
+                if(isEdit != null){
+                    String editEventTitle = etEventTitle.getText().toString();
+                    String editEventDescription = etEventDescription.getText().toString();
 
-                String color = String.valueOf(spinner.getSelectedItem());
-                String colorLower = color.toLowerCase();
+                    String editID = stringID;
+                    databaseEdit = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events").child(editID);
 
-                DateFormat dateFormat = new SimpleDateFormat("E, MMM dd, yyyy");
-                Date date = null;
-                try {
-                    date = dateFormat.parse(stringDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    String editColor = String.valueOf(spinner.getSelectedItem());
+                    String editColorLower = editColor.toLowerCase();
+
+                    DateFormat editDateFormat = new SimpleDateFormat("E, MMM dd, yyyy");
+                    Date editDate = null;
+                    try {
+                        editDate = editDateFormat.parse(tvEventDateSet.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    long editTime = editDate.getTime();
+
+                    //write event to database
+                    databaseEdit.child("timestamp").setValue(Long.toString(editTime));
+                    databaseEdit.child("title").setValue(editEventTitle);
+                    databaseEdit.child("color").setValue(editColorLower);
+                    databaseEdit.child("description").setValue(editEventDescription);
                 }
-                long time = date.getTime();
+                else{
+                    String eventTitle = etEventTitle.getText().toString();
+                    String eventDescription = etEventDescription.getText().toString();
+                    //if(eventDescription.equals(""))
+                    //eventDescription = " ";
 
-                //write event to database
-                Map<String, String> eventData = new HashMap<String, String>();
-                eventData.put("timestamp", Long.toString(time));
-                eventData.put("title", eventTitle);
-                eventData.put("color", colorLower);
-                database.push().setValue(eventData);
+                    String color = String.valueOf(spinner.getSelectedItem());
+                    String colorLower = color.toLowerCase();
 
+                    DateFormat dateFormat = new SimpleDateFormat("E, MMM dd, yyyy");
+                    Date date = null;
+                    try {
+                        date = dateFormat.parse(tvEventDateSet.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    long time = date.getTime();
+
+                    //write event to database
+                    Map<String, String> eventData = new HashMap<String, String>();
+                    eventData.put("timestamp", Long.toString(time));
+                    eventData.put("title", eventTitle);
+                    eventData.put("color", colorLower);
+                    eventData.put("description", eventDescription);
+                    database.push().setValue(eventData);
+                }
 
                 Intent intent = new Intent(AddCalendarEvent.this, com.example.digitalmirror.Calendar.class);
                 startActivity(intent);

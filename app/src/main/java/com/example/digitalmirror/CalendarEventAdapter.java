@@ -45,7 +45,7 @@ public class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdap
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView ivDot;
-        TextView tvEventName;
+        TextView tvEventName, tvEventDateCard;
         Button btnDeleteEvent;
 
         public ViewHolder(@NonNull View itemView) {
@@ -53,6 +53,7 @@ public class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdap
 
             ivDot = itemView.findViewById(R.id.ivDot);
             tvEventName = itemView.findViewById(R.id.tvEventName);
+            tvEventDateCard = itemView.findViewById(R.id.tvEventDateCard);
             btnDeleteEvent = itemView.findViewById(R.id.btnDeleteEvent);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +75,7 @@ public class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdap
     public void onBindViewHolder(@NonNull final CalendarEventAdapter.ViewHolder holder, final int position) {
         holder.itemView.setTag(calendarEvents.get(position));
         holder.tvEventName.setText(calendarEvents.get(position).getEventName());
+        holder.tvEventDateCard.setText(calendarEvents.get(position).getEventDate());
 
         if(calendarEvents.get(position).getDotColor().equals("red")){
             holder.ivDot.setImageResource(R.drawable.red);
