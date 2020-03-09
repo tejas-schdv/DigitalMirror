@@ -1,6 +1,7 @@
 package com.example.digitalmirror;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         //START WEATHER MODULE
         databaseWeather = FirebaseDatabase.getInstance().getReference().child("modules").child("weather");

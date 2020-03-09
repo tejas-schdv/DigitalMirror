@@ -1,6 +1,7 @@
 package com.example.digitalmirror;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_widgets);
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         //checkBox = findViewById(R.id.checkBox);
         recyclerView = findViewById(R.id.list);

@@ -45,13 +45,40 @@
         android:textSize="15sp"
         android:text="Monday, January 1, 2020" />
 
+    <TextView
+        android:id="@+id/tvColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvNewEvent"
+        android:gravity="right"
+        android:paddingRight="20dp"
+        android:text="Color"/>
+
+    <Spinner
+        android:id="@+id/spinnerColor"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvColor"
+        android:layout_alignParentRight="true"
+        android:paddingRight="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tvEventTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvEventDateSet"
+        android:text="Event Title"/>
+
     <EditText
         android:id="@+id/etEventTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Event Title"
-        android:layout_below="@+id/tvEventDateSet"
+        android:layout_below="@+id/tvEventTitle"
         />
+
 
 
 </RelativeLayout>
