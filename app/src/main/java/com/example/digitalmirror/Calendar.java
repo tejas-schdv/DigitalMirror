@@ -60,6 +60,7 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
 
     Context context;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -290,5 +291,15 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
                 break;
         }
         return returnColor;
+    }
+
+    public ArrayList<String> getTodaysEvents(){
+        ArrayList<String> todaysEvents = new ArrayList<>();
+
+        for(int i = 0; i < calendarEvents.size(); i++){
+            todaysEvents.add(calendarEvents.get(i).getEventName());
+        }
+
+        return todaysEvents;
     }
 }

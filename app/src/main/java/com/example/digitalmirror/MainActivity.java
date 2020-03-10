@@ -16,10 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androdocs.httprequest.HttpRequest;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
@@ -27,6 +29,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     String CITY, STATE, ADDRESS; //= "santa paula,ca,us";
     String API = "ebe86c447a46a73e12d63b0def7ba170";
     ImageView ivWeather, ivWind;
-    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate;
+    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate, tvEventsTodayList;
 
     Button btnSettings, btnSetAddress;
 
@@ -260,6 +263,13 @@ public class MainActivity extends AppCompatActivity {
         });
         //END DATE MODULE
 
+        //START CALENDAR MODULE
+        tvEventsTodayList = findViewById(R.id.tvEventsTodayList);
+        Date todaysDate = new Date();
+        //ArrayList<String> todaysEvents = getTodaysEvents(todaysDate);
+
+        //END CALENDAR MODULE
+
         //START TWITTER MODULE (Hashtags)
         //END TWITTER MODULE
 
@@ -356,5 +366,55 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    public ArrayList<String> getTodaysEvents(java.util.Date dateGiven){
+        final ArrayList<String> todaysEvents = new ArrayList<>();
+
+        database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
+
+        String month = new SimpleDateFormat("MM").format(dateGiven);
+        int intMonth = Integer.parseInt(month);
+        String year = new SimpleDateFormat("yyyy").format(dateGiven);
+        int intYear = Integer.parseInt(year);
+        String day = new SimpleDateFormat("dd").format(dateGiven);
+        int intDay = Integer.parseInt(day);
+
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+
+
+        calendar.set(intYear, intMonth-1, intDay);
+        Date firstDay = calendar.getTime();
+
+        long millisFirstDay = firstDay.getTime();
+
+        String stringMillisFirstDay = Long.toString(millisFirstDay);
+
+
+
+
+
+        //querey for goven date
+        Query query = database.orderByChild("timestamp").startAt(stringMillisFirstDay).endAt(stringMillisFirstDay);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // dataSnapshot is the "event" node with all children within date range
+                    for (DataSnapshot event : dataSnapshot.getChildren()) {
+                        // do something with the individual "events"
+                        String eventTitle = event.child("title").getValue().toString();
+                        todaysEvents.add(eventTitle);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return todaysEvents;
     }
 }
