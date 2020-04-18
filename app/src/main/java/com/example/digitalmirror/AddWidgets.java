@@ -40,6 +40,7 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
 
         //checkBox = findViewById(R.id.checkBox);
         recyclerView = findViewById(R.id.list);
+        btnBack = findViewById(R.id.btnBackAddWidgets);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(this);
@@ -55,6 +56,14 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
         myAdapter = new ModuleAdapter(this, modules);
 
         recyclerView.setAdapter(myAdapter);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddWidgets.this, com.example.digitalmirror.MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

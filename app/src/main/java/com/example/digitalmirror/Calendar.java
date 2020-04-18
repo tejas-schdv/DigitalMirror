@@ -75,6 +75,7 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
 
         tvHeader = findViewById(R.id.tvHeader);
         btnAddEvent = findViewById(R.id.btnAddEvent);
+        btnBack = findViewById(R.id.btnBackCalendar);
         compactCalendar = findViewById(R.id.compactcalendar_view);
         compactCalendar.setUseThreeLetterAbbreviation(true);
         compactCalendar.setFirstDayOfWeek(java.util.Calendar.SUNDAY);
@@ -154,6 +155,14 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
                 bundleNew.putString("bundle", date);
                 bundleNew.putString("new", "new");
                 intent.putExtras(bundleNew);
+                startActivity(intent);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Calendar.this, com.example.digitalmirror.AddWidgets.class);
                 startActivity(intent);
             }
         });
