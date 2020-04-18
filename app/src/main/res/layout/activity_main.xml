@@ -138,7 +138,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginLeft="580dp"
         android:textColor="@android:color/white"
-        android:text="Events this is a test comply one two tjree four five six" />
+        android:text="No upcoming events" />
 
 
 </RelativeLayout>

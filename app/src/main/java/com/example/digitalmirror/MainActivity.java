@@ -36,11 +36,11 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     //weather variables
-    DatabaseReference database, databaseClock, databaseWeather, databaseDate;
+    DatabaseReference database, databaseClock, databaseWeather, databaseDate, databaseCalendar;
     String CITY, STATE, ADDRESS; //= "santa paula,ca,us";
     String API = "ebe86c447a46a73e12d63b0def7ba170";
     ImageView ivWeather, ivWind;
-    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate, tvEventsTodayList;
+    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate, tvEventsToday, tvEventsTodayDivider, tvEventsTodayList;
 
     Button btnSettings, btnSetAddress;
 
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //might delete this vvvv
-        database = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("time");
+        /*database = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("time");
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
         //END CLOCK MODULE
 
         //START DATE MODULE
@@ -264,9 +264,96 @@ public class MainActivity extends AppCompatActivity {
         //END DATE MODULE
 
         //START CALENDAR MODULE
+        databaseCalendar = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar");
+        tvEventsToday = findViewById(R.id.tvEventsToday);
+        tvEventsTodayDivider = findViewById(R.id.tvEventsTodayDivider);
         tvEventsTodayList = findViewById(R.id.tvEventsTodayList);
         Date todaysDate = new Date();
-        //ArrayList<String> todaysEvents = getTodaysEvents(todaysDate);
+        final ArrayList<String> todaysEvents = new ArrayList<>();
+
+        DatabaseReference databaseCalendarEvents = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
+
+        String month2 = new SimpleDateFormat("MM").format(todaysDate);
+        int intMonth = Integer.parseInt(month2);
+        String year2 = new SimpleDateFormat("yyyy").format(todaysDate);
+        int intYear = Integer.parseInt(year2);
+        String day2 = new SimpleDateFormat("dd").format(todaysDate);
+        int intDay = Integer.parseInt(day2);
+
+        java.util.Calendar calendar2 = java.util.Calendar.getInstance();
+
+
+        calendar2.set(intYear, intMonth-1, intDay-1);
+        int numOfDaysInMonth = calendar2.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+        Date firstDay = calendar2.getTime();
+        calendar2.add(java.util.Calendar.DAY_OF_MONTH, numOfDaysInMonth-(numOfDaysInMonth-2));
+        Date lastDay = calendar2.getTime();
+
+        long millisFirstDay = firstDay.getTime();
+        long millisLastDay = lastDay.getTime();
+
+        String stringMillisFirstDay = Long.toString(millisFirstDay);
+        String stringMillisLastDay = Long.toString(millisLastDay);
+
+
+
+
+
+        //querey for given date
+        Query query = databaseCalendarEvents.orderByChild("timestamp").startAt(stringMillisFirstDay).endAt(stringMillisLastDay);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // dataSnapshot is the "event" node with all children within date range
+                    for (DataSnapshot event : dataSnapshot.getChildren()) {
+                        // do something with the individual "events"
+                        String eventTitle = event.child("title").getValue().toString();
+                        String eventDescription = event.child("description").getValue().toString();
+                        String eventTotal = eventTitle + ": " + eventDescription;
+                        todaysEvents.add(eventTotal);
+                    }
+                }
+
+                String events = "";
+                if(!todaysEvents.isEmpty()){
+                    for(int i = 0; i < todaysEvents.size(); i++){
+                        events = events + (todaysEvents.get(i) + "\n\n");
+                    }
+                    tvEventsTodayList.setText(events);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        DatabaseReference dbCalendarEnabled = databaseCalendar.child("enabled");
+        dbCalendarEnabled.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue().toString().equals("false"))
+                {
+                    tvEventsToday.setVisibility(View.GONE);
+                    tvEventsTodayDivider.setVisibility(View.GONE);
+                    tvEventsTodayList.setVisibility(View.GONE);
+                }
+                else{
+                    tvEventsToday.setVisibility(View.VISIBLE);
+                    tvEventsTodayDivider.setVisibility(View.VISIBLE);
+                    tvEventsTodayList.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         //END CALENDAR MODULE
 
