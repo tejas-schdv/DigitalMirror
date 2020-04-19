@@ -107,8 +107,6 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                 switch (v.getId()) {
                     case R.id.btnGoogle:
                         signIn();
-                        signInButton.setVisibility(View.GONE);
-                        btnSignOut.setVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -120,6 +118,9 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                 signOut();
                 btnSignOut.setVisibility(View.GONE);
                 signInButton.setVisibility(View.VISIBLE);
+
+                Intent intent = new Intent(AddWidgets.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -166,6 +167,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+            signInButton.setVisibility(View.GONE);
+            btnSignOut.setVisibility(View.VISIBLE);
         }
     }
 
@@ -187,7 +190,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.hasChild(uid)) {
-                        //do nothing
+                        Intent intent = new Intent(AddWidgets.this, MainActivity.class);
+                        startActivity(intent);
                     }
                     else
                     {
@@ -270,6 +274,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                         finish();
                     }
                 });
+
+
     }
 
     public boolean isSignedIn() {
