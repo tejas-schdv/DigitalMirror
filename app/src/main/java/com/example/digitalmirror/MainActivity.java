@@ -17,6 +17,12 @@ import android.widget.Toast;
 
 import com.androdocs.httprequest.HttpRequest;
 import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +38,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate, tvEventsToday, tvEventsTodayDivider, tvEventsTodayList;
 
     Button btnSettings, btnSetAddress;
+    String uid = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +61,19 @@ public class MainActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        //START GOOGLE STUFF
+        boolean check = false;
+
+
+        if(isSignedIn()) {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            uid = account.getId();
+
+        }
+        //END GOOGLE STUFF
+
         //START WEATHER MODULE
-        databaseWeather = FirebaseDatabase.getInstance().getReference().child("modules").child("weather");
+        databaseWeather = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("weather");
         ivWeather = findViewById(R.id.ivWeather);
         ivWind = findViewById(R.id.ivWind);
 
@@ -118,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         clock = findViewById(R.id.tvClock);
         clock.setText(currentTime);
 
-        databaseClock = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("enabled");
+        databaseClock = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("clock").child("enabled");
         databaseClock.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -242,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         String dateForm = dayOfWeek + ", " + month + " " + dayNumber + ", " + yearNumber;
         tvDate.setText(dateForm);
 
-        databaseDate = FirebaseDatabase.getInstance().getReference().child("modules").child("date");
+        databaseDate = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("date");
         DatabaseReference dbDateEnabled = databaseDate.child("enabled");
         dbDateEnabled.addValueEventListener(new ValueEventListener() {
             @Override
@@ -264,14 +283,14 @@ public class MainActivity extends AppCompatActivity {
         //END DATE MODULE
 
         //START CALENDAR MODULE
-        databaseCalendar = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar");
+        databaseCalendar = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar");
         tvEventsToday = findViewById(R.id.tvEventsToday);
         tvEventsTodayDivider = findViewById(R.id.tvEventsTodayDivider);
         tvEventsTodayList = findViewById(R.id.tvEventsTodayList);
         Date todaysDate = new Date();
         final ArrayList<String> todaysEvents = new ArrayList<>();
 
-        DatabaseReference databaseCalendarEvents = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
+        DatabaseReference databaseCalendarEvents = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
 
         String month2 = new SimpleDateFormat("MM").format(todaysDate);
         int intMonth = Integer.parseInt(month2);
@@ -446,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             } catch (JSONException e) {
-                Toast toast=Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_SHORT);
+                Toast toast=Toast.makeText(getApplicationContext(),"ERROR: Unable to retrieve weather info",Toast.LENGTH_SHORT);
                 toast.show();
                 //findViewById(R.id.loader).setVisibility(View.GONE);
                 //findViewById(R.id.errorText).setVisibility(View.VISIBLE);
@@ -458,7 +477,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<String> getTodaysEvents(java.util.Date dateGiven){
         final ArrayList<String> todaysEvents = new ArrayList<>();
 
-        database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
+        database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
 
         String month = new SimpleDateFormat("MM").format(dateGiven);
         int intMonth = Integer.parseInt(month);
@@ -503,5 +522,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return todaysEvents;
+    }
+
+    public boolean isSignedIn() {
+        return GoogleSignIn.getLastSignedInAccount(this) != null;
     }
 }

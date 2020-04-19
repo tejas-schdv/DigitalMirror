@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,11 +62,18 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
 
     Context context;
 
+    String uid = "default";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        if(GoogleSignIn.getLastSignedInAccount(this) != null) {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            uid = account.getId();
+        }
 
         context = this;
 
@@ -79,8 +88,7 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
         compactCalendar = findViewById(R.id.compactcalendar_view);
         compactCalendar.setUseThreeLetterAbbreviation(true);
         compactCalendar.setFirstDayOfWeek(java.util.Calendar.SUNDAY);
-        database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
-
+        database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
 
 
         String initialMonth = dateFormatMonth.format(compactCalendar.getFirstDayOfCurrentMonth());
@@ -200,9 +208,14 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
         }
         dateGiven = date4;*/
 
+        if(GoogleSignIn.getLastSignedInAccount(context) != null) {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
+            uid = account.getId();
+        }
+
         ArrayList<CalendarEvent> monthEvents = new ArrayList<>();
 
-        database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
+        database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
 
         String month = new SimpleDateFormat("MM").format(dateGiven);
         int intMonth = Integer.parseInt(month);
@@ -310,5 +323,9 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
         }
 
         return todaysEvents;
+    }
+
+    public boolean isSignedIn() {
+        return GoogleSignIn.getLastSignedInAccount(this) != null;
     }
 }
