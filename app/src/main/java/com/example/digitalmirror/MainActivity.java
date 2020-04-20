@@ -46,6 +46,7 @@ import com.google.gson.GsonBuilder;
 
 import retrofit2.Retrofit;
 import java.util.List;
+import java.util.Random;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -420,9 +421,11 @@ public class MainActivity extends AppCompatActivity {
 //                Log.d(TAG, "onResponse: received information: " + response.body().toString());
                 String content = "";
                 ArrayList<Children> childrenList = response.body().getData().getChildren();
+                Random rand = new Random();
+                int rand_int1 = rand.nextInt(10);
                 for( int i = 0; i<10; i++){
                     content = "";
-                    content = childrenList.get(i).getData().getTitle();
+                    content = childrenList.get(rand_int1).getData().getTitle();
 //                            "contest_mode: " + childrenList.get(i).getData().getContest_mode() + "\n" +
 //                            "subreddit: " + childrenList.get(i).getData().getSubreddit()  + "\n" +
 //                            "author: " + childrenList.get(i).getData().getAuthor()  + "\n" +
@@ -431,20 +434,20 @@ public class MainActivity extends AppCompatActivity {
                     tvRedditNews.setText(content);
                     content = "";
 
-                    try {
-                        // Using Thread.sleep() we can add delay in our
-                        // application in a millisecond time. For the example
-                        // below the program will take a deep breath for one
-                        // second before continue to print the next value of
-                        // the loop.
-                        Thread.sleep(2000);
-
-                        // The Thread.sleep() need to be executed inside a
-                        // try-catch block and we need to catch the
-                        // InterruptedException.
-                    } catch (InterruptedException ie) {
-                        ie.printStackTrace();
-                    }
+//                    try {
+//                        // Using Thread.sleep() we can add delay in our
+//                        // application in a millisecond time. For the example
+//                        // below the program will take a deep breath for one
+//                        // second before continue to print the next value of
+//                        // the loop.
+//                        Thread.sleep(2000);
+//
+//                        // The Thread.sleep() need to be executed inside a
+//                        // try-catch block and we need to catch the
+//                        // InterruptedException.
+//                    } catch (InterruptedException ie) {
+//                        ie.printStackTrace();
+//                    }
 
 
 //                    break;
