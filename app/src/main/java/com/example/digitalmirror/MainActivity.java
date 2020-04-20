@@ -12,18 +12,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androdocs.httprequest.HttpRequest;
-import com.github.sundeepk.compactcalendarview.domain.Event;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,24 +29,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import com.example.digitalmirror.Post;
-import com.google.gson.GsonBuilder;
 
 import retrofit2.Retrofit;
-import java.util.List;
+
 import java.util.Random;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import com.example.digitalmirror.model.Feed;
 import com.example.digitalmirror.model.children.Children;
@@ -403,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
         //END EMAIL MODULE
 
 
-        //The above done by tuesday
+        //START NEWS MODULE
         tvRedditNews = findViewById(R.id.tvRedditFrontpage);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -417,8 +405,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Feed>() {
             @Override
             public void onResponse(Call<Feed> call, Response<Feed> response) {
-//                Log.d(TAG, "onResponse: Server Response: " + response.toString());
-//                Log.d(TAG, "onResponse: received information: " + response.body().toString());
+
                 String content = "";
                 ArrayList<Children> childrenList = response.body().getData().getChildren();
                 Random rand = new Random();
@@ -426,31 +413,9 @@ public class MainActivity extends AppCompatActivity {
                 for( int i = 0; i<10; i++){
                     content = "";
                     content = childrenList.get(rand_int1).getData().getTitle();
-//                            "contest_mode: " + childrenList.get(i).getData().getContest_mode() + "\n" +
-//                            "subreddit: " + childrenList.get(i).getData().getSubreddit()  + "\n" +
-//                            "author: " + childrenList.get(i).getData().getAuthor()  + "\n" +
-//                            "-------------------------------------------------------------------------\n\n");
-//                    tvRedditNews.append(content);
                     tvRedditNews.setText(content);
                     content = "";
 
-//                    try {
-//                        // Using Thread.sleep() we can add delay in our
-//                        // application in a millisecond time. For the example
-//                        // below the program will take a deep breath for one
-//                        // second before continue to print the next value of
-//                        // the loop.
-//                        Thread.sleep(2000);
-//
-//                        // The Thread.sleep() need to be executed inside a
-//                        // try-catch block and we need to catch the
-//                        // InterruptedException.
-//                    } catch (InterruptedException ie) {
-//                        ie.printStackTrace();
-//                    }
-
-
-//                    break;
                 }
             }
 
@@ -460,55 +425,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        //START NEWS MODULE
-//        tvRedditNews = findViewById(R.id.tvRedditFrontpage);
-////        tvRedditNews.setText(Post.getTitle());
-//
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://jsonformatter.org/json-pretty-print/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-//
-//        Call<List<Post>> call = jsonPlaceHolderApi.getPosts();
-//
-////
-//        call.enqueue(new Callback<List<Post>>() {
-//            @Override
-//            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-//
-//
-////                if (!response.isSuccessful()) {
-////                    tvRedditNews.setText("Code: " + response.code());
-////                    return;
-////                }
-////
-//                List<Post> posts = response.body();
-////                tvRedditNews.setText(posts.getTitle());
-//
-//
-////
-//                for (Post post : posts) {
-//                    String content = "";
-////                    content += "ID: " + post.getId() + "\n";
-////                    content += "User ID: " + post.getUserId() + "\n";
-//                    content +=  post.getTitle();
-////                    content += "Text: " + post.getText() + "\n\n";
-//
-//
-//                    tvRedditNews.append(content);
-//                    break;
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Post>> call, Throwable t) {
-//                tvRedditNews.setText(t.getMessage());
-//            }
-//        });
 
         //END NEWS MODULE
 
