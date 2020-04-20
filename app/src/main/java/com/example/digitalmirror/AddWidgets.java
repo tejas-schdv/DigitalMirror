@@ -169,6 +169,23 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
             handleSignInResult(task);
             signInButton.setVisibility(View.GONE);
             btnSignOut.setVisibility(View.VISIBLE);
+
+
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            final String uid = account.getId();
+            FirebaseDatabase.getInstance().getReference().child("users").child(uid)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            FirebaseDatabase.getInstance().getReference().child("users").child("current").setValue(dataSnapshot.getValue());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
         }
     }
 
@@ -234,6 +251,21 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                         user_data.put("modules", modules);
                         usersRef.child(uid).setValue(user_data);
 
+                        //copy child to current
+                        FirebaseDatabase.getInstance().getReference().child("users").child(uid)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        FirebaseDatabase.getInstance().getReference().child("users").child("current").setValue(dataSnapshot.getValue());
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                        //relaunch main activity
                         Intent intent = new Intent(AddWidgets.this, MainActivity.class);
                         startActivity(intent);
                     }
@@ -243,6 +275,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
+
+
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -275,7 +309,18 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                     }
                 });
 
+        FirebaseDatabase.getInstance().getReference().child("users").child("default")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        FirebaseDatabase.getInstance().getReference().child("users").child("current").setValue(dataSnapshot.getValue());
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public boolean isSignedIn() {

@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         //END GOOGLE STUFF
 
         //START WEATHER MODULE
-        databaseWeather = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("weather");
+        databaseWeather = FirebaseDatabase.getInstance().getReference().child("users").child("current").child("modules").child("weather");
         ivWeather = findViewById(R.id.ivWeather);
         ivWind = findViewById(R.id.ivWind);
 
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         clock = findViewById(R.id.tvClock);
         clock.setText(currentTime);
 
-        databaseClock = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("clock").child("enabled");
+        databaseClock = FirebaseDatabase.getInstance().getReference().child("users").child("current").child("modules").child("clock").child("enabled");
         databaseClock.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         String dateForm = dayOfWeek + ", " + month + " " + dayNumber + ", " + yearNumber;
         tvDate.setText(dateForm);
 
-        databaseDate = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("date");
+        databaseDate = FirebaseDatabase.getInstance().getReference().child("users").child("current").child("modules").child("date");
         DatabaseReference dbDateEnabled = databaseDate.child("enabled");
         dbDateEnabled.addValueEventListener(new ValueEventListener() {
             @Override
@@ -283,14 +283,14 @@ public class MainActivity extends AppCompatActivity {
         //END DATE MODULE
 
         //START CALENDAR MODULE
-        databaseCalendar = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar");
+        databaseCalendar = FirebaseDatabase.getInstance().getReference().child("users").child("current").child("modules").child("calendar");
         tvEventsToday = findViewById(R.id.tvEventsToday);
         tvEventsTodayDivider = findViewById(R.id.tvEventsTodayDivider);
         tvEventsTodayList = findViewById(R.id.tvEventsTodayList);
         Date todaysDate = new Date();
         final ArrayList<String> todaysEvents = new ArrayList<>();
 
-        DatabaseReference databaseCalendarEvents = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
+        DatabaseReference databaseCalendarEvents = FirebaseDatabase.getInstance().getReference().child("users").child("current").child("modules").child("calendar").child("events");
 
         String month2 = new SimpleDateFormat("MM").format(todaysDate);
         int intMonth = Integer.parseInt(month2);
@@ -477,7 +477,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<String> getTodaysEvents(java.util.Date dateGiven){
         final ArrayList<String> todaysEvents = new ArrayList<>();
 
-        database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
+        database = FirebaseDatabase.getInstance().getReference().child("users").child("current").child("modules").child("calendar").child("events");
 
         String month = new SimpleDateFormat("MM").format(dateGiven);
         int intMonth = Integer.parseInt(month);
