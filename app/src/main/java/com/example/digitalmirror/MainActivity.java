@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -40,6 +41,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import com.example.digitalmirror.Post;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Retrofit;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.digitalmirror.model.Feed;
+import com.example.digitalmirror.model.children.Children;
 
 public class MainActivity extends AppCompatActivity {
     //weather variables
@@ -47,10 +62,12 @@ public class MainActivity extends AppCompatActivity {
     String CITY, STATE, ADDRESS; //= "santa paula,ca,us";
     String API = "ebe86c447a46a73e12d63b0def7ba170";
     ImageView ivWeather, ivWind;
-    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate, tvEventsToday, tvEventsTodayDivider, tvEventsTodayList;
+    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate, tvEventsToday, tvEventsTodayDivider, tvEventsTodayList, tvRedditNews;
 
     Button btnSettings, btnSetAddress;
     String uid = "default";
+    private static final String BASE_URL = "https://www.reddit.com/r/news/";
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -386,8 +403,110 @@ public class MainActivity extends AppCompatActivity {
 
 
         //The above done by tuesday
+        tvRedditNews = findViewById(R.id.tvRedditFrontpage);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RedditAPI redditAPI = retrofit.create(RedditAPI.class);
+        Call<Feed> call = redditAPI.getData();
+
+        call.enqueue(new Callback<Feed>() {
+            @Override
+            public void onResponse(Call<Feed> call, Response<Feed> response) {
+//                Log.d(TAG, "onResponse: Server Response: " + response.toString());
+//                Log.d(TAG, "onResponse: received information: " + response.body().toString());
+                String content = "";
+                ArrayList<Children> childrenList = response.body().getData().getChildren();
+                for( int i = 0; i<10; i++){
+                    content = "";
+                    content = childrenList.get(i).getData().getTitle();
+//                            "contest_mode: " + childrenList.get(i).getData().getContest_mode() + "\n" +
+//                            "subreddit: " + childrenList.get(i).getData().getSubreddit()  + "\n" +
+//                            "author: " + childrenList.get(i).getData().getAuthor()  + "\n" +
+//                            "-------------------------------------------------------------------------\n\n");
+//                    tvRedditNews.append(content);
+                    tvRedditNews.setText(content);
+                    content = "";
+
+                    try {
+                        // Using Thread.sleep() we can add delay in our
+                        // application in a millisecond time. For the example
+                        // below the program will take a deep breath for one
+                        // second before continue to print the next value of
+                        // the loop.
+                        Thread.sleep(2000);
+
+                        // The Thread.sleep() need to be executed inside a
+                        // try-catch block and we need to catch the
+                        // InterruptedException.
+                    } catch (InterruptedException ie) {
+                        ie.printStackTrace();
+                    }
+
+
+//                    break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Feed> call, Throwable t) {
+                Log.e(TAG, "onFailure: Something went wrong: " + t.getMessage() );
+                Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         //START NEWS MODULE
+//        tvRedditNews = findViewById(R.id.tvRedditFrontpage);
+////        tvRedditNews.setText(Post.getTitle());
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("https://jsonformatter.org/json-pretty-print/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+//
+//        Call<List<Post>> call = jsonPlaceHolderApi.getPosts();
+//
+////
+//        call.enqueue(new Callback<List<Post>>() {
+//            @Override
+//            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+//
+//
+////                if (!response.isSuccessful()) {
+////                    tvRedditNews.setText("Code: " + response.code());
+////                    return;
+////                }
+////
+//                List<Post> posts = response.body();
+////                tvRedditNews.setText(posts.getTitle());
+//
+//
+////
+//                for (Post post : posts) {
+//                    String content = "";
+////                    content += "ID: " + post.getId() + "\n";
+////                    content += "User ID: " + post.getUserId() + "\n";
+//                    content +=  post.getTitle();
+////                    content += "Text: " + post.getText() + "\n\n";
+//
+//
+//                    tvRedditNews.append(content);
+//                    break;
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Post>> call, Throwable t) {
+//                tvRedditNews.setText(t.getMessage());
+//            }
+//        });
+
         //END NEWS MODULE
 
         //START NOTIFICATION MODULE
