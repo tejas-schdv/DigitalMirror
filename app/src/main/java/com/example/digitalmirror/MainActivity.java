@@ -433,14 +433,14 @@ public class MainActivity extends AppCompatActivity {
                 Long updatedAt = jsonObj.getLong("dt");
                 String updatedAtText = "Updated at: " + new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH).format(new Date(updatedAt * 1000));
                 String temp = main.getString("temp") + "°C";
-                String tempMin = "Min Temp: " + main.getString("temp_min") + "°C";
-                String tempMax = "Max Temp: " + main.getString("temp_max") + "°C";
+                String tempMin = "Hi: " + main.getString("temp_min") + "°C";
+                String tempMax = "Lo: " + main.getString("temp_max") + "°C";
                 String pressure = main.getString("pressure");
                 String humidity = main.getString("humidity");
 
                 Long sunrise = sys.getLong("sunrise");
                 Long sunset = sys.getLong("sunset");
-                String windSpeed = wind.getString("speed");
+                String windSpeed = wind.getString("speed") + " MPH";
                 String weatherDescription = weather.getString("description");
 
                 String address = jsonObj.getString("name") + ", " + sys.getString("country");
