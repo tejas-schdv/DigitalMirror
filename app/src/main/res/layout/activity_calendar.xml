@@ -6,14 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".Calendar">
 
-    <TextView
-        android:id="@+id/tvHeader"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:text="MONTH"
-        android:textSize="40sp"
-        />
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/btnBackCalendar"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:background="#6e6bff"
+            app:srcCompat="@drawable/back2" />
+
+        <TextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#6e6bff"
+            android:text="MONTH"
+            android:textColor="#f3f2ff"
+            android:textSize="40sp"
+            android:paddingBottom="8dp"
+            />
+    </LinearLayout>
+
+
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,11 +41,11 @@
         android:layout_height="250dp"
         app:compactCalendarTargetHeight="250dp"
         app:compactCalendarTextSize="12sp"
-        android:layout_below="@+id/tvHeader"
-        app:compactCalendarBackgroundColor="#ffe95451"
+        android:layout_below="@+id/linearLayout"
+        app:compactCalendarBackgroundColor="#b8b3ff"
         app:compactCalendarTextColor="#fff"
-        app:compactCalendarCurrentSelectedDayBackgroundColor="#E57373"
-        app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+        app:compactCalendarCurrentSelectedDayBackgroundColor="#5d5a7d"
+        app:compactCalendarCurrentDayBackgroundColor="#918dc4"
         app:compactCalendarMultiEventIndicatorColor="#fff"
         />
 
@@ -41,14 +58,14 @@
         android:text="ADD"
         />
 
-    <Button
+    <!--<Button
         android:id="@+id/btnBackCalendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:text="BACK"
-        />
+        />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listEvents"

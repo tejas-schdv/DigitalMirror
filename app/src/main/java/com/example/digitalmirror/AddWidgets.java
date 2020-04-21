@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
     RecyclerView recyclerView;
     RecyclerView.Adapter myAdapter;
     RecyclerView.LayoutManager layoutManager;
-    Button btnBack, btnSignOut;
+    Button btnSignOut;
+    ImageButton btnBack;
 
     ArrayList<Module> modules;
     CheckBox checkBoxClock, checkBoxWeather, checkBoxDate, checkBoxCalendar, checkBoxReddit;
@@ -108,8 +110,6 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                 switch (v.getId()) {
                     case R.id.btnGoogle:
                         signIn();
-                        signInButton.setVisibility(View.GONE);
-                        btnSignOut.setVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -121,6 +121,9 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                 signOut();
                 btnSignOut.setVisibility(View.GONE);
                 signInButton.setVisibility(View.VISIBLE);
+
+                Intent intent = new Intent(AddWidgets.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -167,6 +170,25 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+            signInButton.setVisibility(View.GONE);
+            btnSignOut.setVisibility(View.VISIBLE);
+
+
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            final String uid = account.getId();
+            FirebaseDatabase.getInstance().getReference().child("users").child(uid)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            FirebaseDatabase.getInstance().getReference().child("users").child("current").setValue(dataSnapshot.getValue());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
         }
     }
 
@@ -188,7 +210,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.hasChild(uid)) {
-                        //do nothing
+                        Intent intent = new Intent(AddWidgets.this, MainActivity.class);
+                        startActivity(intent);
                     }
                     else
                     {
@@ -235,6 +258,21 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                         user_data.put("modules", modules);
                         usersRef.child(uid).setValue(user_data);
 
+                        //copy child to current
+                        FirebaseDatabase.getInstance().getReference().child("users").child(uid)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        FirebaseDatabase.getInstance().getReference().child("users").child("current").setValue(dataSnapshot.getValue());
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                        //relaunch main activity
                         Intent intent = new Intent(AddWidgets.this, MainActivity.class);
                         startActivity(intent);
                     }
@@ -244,6 +282,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
+
+
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -273,6 +313,19 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(AddWidgets.this, "Signed Out Successfully", Toast.LENGTH_LONG).show();
                         finish();
+                    }
+                });
+
+        FirebaseDatabase.getInstance().getReference().child("users").child("default")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        FirebaseDatabase.getInstance().getReference().child("users").child("current").setValue(dataSnapshot.getValue());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
     }

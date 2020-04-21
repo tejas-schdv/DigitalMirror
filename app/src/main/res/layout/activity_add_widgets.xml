@@ -7,32 +7,49 @@
     android:orientation="vertical"
     tools:context=".AddWidgets">
 
-
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="40sp"
-        android:textColor="@android:color/black"
-        android:background="@android:color/darker_gray"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:text="Widgets" />
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/btnBackAddWidgets"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:background="#6e6bff"
+            app:srcCompat="@drawable/back2" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            android:textColor="#f3f2ff"
+            android:background="#6e6bff"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/btnBackAddWidgets"
+            android:text="Widgets" />
+        </LinearLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <Button
+    <!--<Button
         android:id="@+id/btnBackAddWidgets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:text="BACK"
-        />
+        />-->
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/btnGoogle"
@@ -49,6 +66,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:background="#6e6bff"
+        android:textColor="#f3f2ff"
         android:text="Sign Out"
         />
+
+
 </RelativeLayout>

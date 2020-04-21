@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Monday, 00 January, 0000"
         android:textColor="@android:color/white"
-        android:textSize="30sp"/>
+        android:textSize="20sp" />
 
     <TextClock
         android:id="@+id/tvClock"
@@ -24,38 +24,53 @@
         android:layout_below="@+id/tvDate"
         android:text="00:00 AM"
         android:textColor="@android:color/white"
-        android:textSize="50sp"/>
+        android:textSize="60sp" />
 
-    <Button
-        android:id="@+id/btnSettings"
+    <!--<Button
+        android:id="@+id/btnSettings2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="Settings" />
+        android:text="Settings" />-->
+
+    <ImageButton
+        android:id="@+id/btnSettings"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@android:color/black"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:srcCompat="@drawable/settings" />
 
     <ImageView
         android:id="@+id/ivWeather"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_below="@id/tvClock"
+        android:layout_marginTop="20dp"
         app:srcCompat="@drawable/cloud" />
 
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivWeather"
+        android:layout_toRightOf="@+id/ivWeather"
+        android:layout_below="@+id/tvClock"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
         android:textColor="@android:color/white"
+
         android:text="Status" />
 
     <TextView
         android:id="@+id/tvTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvClock"
-        android:layout_toRightOf="@+id/ivWeather"
+        android:layout_below="@+id/ivWeather"
+
         android:textSize="50sp"
         android:textColor="@android:color/white"
         android:text="00° C" />
@@ -64,11 +79,13 @@
         android:id="@+id/tvTempMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvClock"
+        android:layout_below="@+id/ivWeather"
         android:layout_toRightOf="@+id/tvTemp"
-        android:textSize="25sp"
+        android:textSize="15sp"
         android:textColor="@android:color/white"
-        android:text="Min: 00°" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="17dp"
+        android:text="Hi: 00°" />
 
     <TextView
         android:id="@+id/tvTempMax"
@@ -76,9 +93,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTempMin"
         android:layout_toRightOf="@+id/tvTemp"
-        android:textSize="25sp"
+        android:textSize="15sp"
         android:textColor="@android:color/white"
-        android:text="Max: 00°" />
+        android:layout_marginLeft="10dp"
+        android:text="Lo: 00°" />
 
     <TextView
         android:id="@+id/tvPressure"
@@ -98,16 +116,17 @@
         android:id="@+id/ivWind"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_below="@+id/tvStatus"
+        android:layout_below="@+id/tvTemp"
         app:srcCompat="@drawable/wind" />
 
     <TextView
         android:id="@+id/tvWind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvStatus"
+        android:layout_below="@+id/tvTemp"
         android:layout_toRightOf="@+id/ivWind"
         android:textColor="@android:color/white"
+        android:layout_marginLeft="10dp"
         android:text="(wind info)" />
 
     <TextView
@@ -119,11 +138,11 @@
         android:layout_marginRight="58dp"
 
         android:textColor="@android:color/white"
-        android:text="Today" />
+        android:text="Upcoming Events" />
 
     <TextView
         android:id="@+id/tvEventsTodayDivider"
-        android:layout_width="100dp"
+        android:layout_width="170dp"
         android:layout_height="2dp"
         android:layout_alignParentRight="true"
         android:layout_below="@id/tvEventsToday"

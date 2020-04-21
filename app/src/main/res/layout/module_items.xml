@@ -5,7 +5,7 @@
 
     <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        card_view:cardBackgroundColor="#c6c6c6"
+        card_view:cardBackgroundColor="#6e6bff"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="false"
@@ -23,10 +23,13 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
+                android:background="#6e6bff"
                 android:orientation="horizontal">
 
                 <CheckBox
                     android:id="@+id/checkBox"
+                    android:background="#6e6bff"
+                    android:buttonTint="#f3f2ff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -40,20 +43,23 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
+                android:background="#6e6bff"
                 app:srcCompat="@drawable/clock" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
+                android:background="#6e6bff"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textSize="40sp"
-                    android:textColor="@android:color/black"
+                    android:textSize="35sp"
+                    android:textColor="#f3f2ff"
                     android:layout_marginLeft="10dp"
+                    android:background="#6e6bff"
 
                     android:gravity="center_vertical"
                     android:text="Clock" />

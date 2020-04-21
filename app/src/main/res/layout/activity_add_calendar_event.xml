@@ -6,35 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".AddCalendarEvent">
 
-
-    <TextView
-        android:id="@+id/tvNewEvent"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:textSize="40sp"
-        android:background="@color/colorAccent"
-        android:text="New Event" />
+        android:weightSum="3">
 
-    <Button
-        android:id="@+id/btnExit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="X" />
+        <ImageButton
+            android:id="@+id/btnExit"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:background="#6e6bff"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/clear" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="Save" />
+
+        <TextView
+            android:id="@+id/tvNewEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:textSize="40sp"
+            android:background="#6e6bff"
+            android:textColor="#f3f2ff"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="New Event" />
+
+        <ImageButton
+            android:id="@+id/btnSave"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:background="#6e6bff"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/check2" />
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/tvEventDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvNewEvent"
+        android:layout_below="@+id/linearLayout"
         android:text="Event Date" />
 
     <TextView
@@ -49,7 +63,7 @@
         android:id="@+id/tvColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvNewEvent"
+        android:layout_below="@+id/linearLayout"
         android:gravity="right"
         android:paddingRight="20dp"
         android:text="Color"/>
