@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView ivWeather, ivWind;
     TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate, tvEventsToday, tvEventsTodayDivider, tvEventsTodayList;
 
-    Button btnSettings, btnSetAddress;
+    ImageButton btnSettings;
     String uid = "default";
 
     @Override
@@ -154,24 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        //might delete this vvvv
-        /*database = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("time");
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!currentTime.equals(dataSnapshot.getValue().toString()))
-                {
-                    database.setValue(currentTime);
-                    //clock.setText(currentTime);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
         //END CLOCK MODULE
 
         //START DATE MODULE

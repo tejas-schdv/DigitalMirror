@@ -26,24 +26,24 @@
         android:textColor="@android:color/white"
         android:textSize="60sp" />
 
-    <Button
+    <!--<Button
         android:id="@+id/btnSettings2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="Settings" />
+        android:text="Settings" />-->
 
     <ImageButton
         android:id="@+id/btnSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@android:color/black"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/gear"
-        android:text="Settings" />
+        app:srcCompat="@drawable/settings" />
 
     <ImageView
         android:id="@+id/ivWeather"

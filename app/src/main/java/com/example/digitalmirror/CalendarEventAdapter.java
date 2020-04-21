@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +55,7 @@ public class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdap
 
         ImageView ivDot;
         TextView tvEventName, tvEventDateCard;
-        Button btnDeleteEvent;
+        ImageButton btnDeleteEvent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

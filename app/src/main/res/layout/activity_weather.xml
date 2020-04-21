@@ -6,21 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".Weather">
 
-    <TextView
-        android:id="@+id/tvWeather"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:textColor="@android:color/black"
-        android:gravity="center"
-        android:text="Weather"
-        android:textSize="60sp" />
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/btnBackWeather"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:background="#6e6bff"
+            app:srcCompat="@drawable/back2" />
+
+        <TextView
+            android:id="@+id/tvWeather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            android:textColor="#f3f2ff"
+            android:background="#6e6bff"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/btnBackAddWidgets"
+            android:text="Weather" />
+    </LinearLayout>
+
+
 
     <EditText
         android:id="@+id/etCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvWeather"
+        android:layout_below="@+id/linearLayout"
         android:hint="City"/>
 
     <EditText
@@ -36,5 +55,8 @@
         android:layout_below="@+id/etState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#6e6bff"
+        android:textColor="#f3f2ff"
+        android:layout_centerInParent="true"
         android:text="Set" />
 </RelativeLayout>

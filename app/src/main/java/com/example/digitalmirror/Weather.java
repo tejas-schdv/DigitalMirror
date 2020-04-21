@@ -2,11 +2,13 @@ package com.example.digitalmirror;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.androdocs.httprequest.HttpRequest;
@@ -25,6 +27,7 @@ public class Weather extends AppCompatActivity {
     private String ADDRESS;
     EditText etCity, etState;
     Button btnSetAddress;
+    ImageButton btnBack;
     DatabaseReference database;
     String API = "ebe86c447a46a73e12d63b0def7ba170";
 
@@ -37,6 +40,7 @@ public class Weather extends AppCompatActivity {
         etState = findViewById(R.id.etState);
 
         btnSetAddress = findViewById(R.id.btnSetAddress);
+        btnBack = findViewById(R.id.btnBackWeather);
 
         btnSetAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +58,14 @@ public class Weather extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), "Enter a value into both fields", Toast.LENGTH_SHORT);
                     toast.show();
                 }
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Weather.this, AddWidgets.class);
+                startActivity(intent);
             }
         });
 

@@ -5,7 +5,7 @@
 
     <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        card_view:cardBackgroundColor="#c6c6c6"
+        card_view:cardBackgroundColor="#6e6bff"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="false"
@@ -47,6 +47,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="-20dp"
                     android:textSize="15sp"
+                    android:textColor="#f3f2ff"
                     android:text="Mon, Jan 01, 2020"
                     />
 
@@ -56,19 +57,20 @@
                     android:layout_height="match_parent"
                     android:layout_below="@id/tvEventDateCard"
                     android:textSize="25sp"
-                    android:textColor="@android:color/black"
+                    android:textColor="#f3f2ff"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
-
                     android:text="Event Name" />
 
-                <Button
+
+                <ImageButton
                     android:id="@+id/btnDeleteEvent"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_height="match_parent"
+                    android:background="#6e6bff"
                     android:layout_centerInParent="true"
-                    android:text="X"/>
+                    android:layout_alignParentRight="true"
+                    app:srcCompat="@drawable/clear" />
             </RelativeLayout>
 
 

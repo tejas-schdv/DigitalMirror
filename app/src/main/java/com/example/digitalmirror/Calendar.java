@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +57,8 @@ public class Calendar extends AppCompatActivity implements CalendarEventAdapter.
     RecyclerView recyclerView;
     RecyclerView.Adapter myAdapter;
     RecyclerView.LayoutManager layoutManager;
-    Button btnBack, btnDeleteEvent;
+    Button btnDeleteEvent;
+    ImageButton btnBack;
 
     ArrayList<CalendarEvent> calendarEvents;
 

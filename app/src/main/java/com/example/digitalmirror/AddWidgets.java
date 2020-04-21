@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,8 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
     RecyclerView recyclerView;
     RecyclerView.Adapter myAdapter;
     RecyclerView.LayoutManager layoutManager;
-    Button btnBack, btnSignOut;
+    Button btnSignOut;
+    ImageButton btnBack;
 
     ArrayList<Module> modules;
     CheckBox checkBoxClock, checkBoxWeather, checkBoxDate, checkBoxCalendar;
