@@ -40,7 +40,7 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
     Button btnBack, btnSignOut;
 
     ArrayList<Module> modules;
-    CheckBox checkBoxClock, checkBoxWeather, checkBoxDate, checkBoxCalendar;
+    CheckBox checkBoxClock, checkBoxWeather, checkBoxDate, checkBoxCalendar, checkBoxReddit;
 
     int RC_SIGN_IN = 0;
     SignInButton signInButton;
@@ -78,6 +78,7 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
         modules.add(new Module("Clock", "clock", checkBoxClock));
         modules.add(new Module("Weather", "weather", checkBoxWeather));
         modules.add(new Module("Calendar", "calendar", checkBoxCalendar));
+        modules.add(new Module("Reddit News", "reddit", checkBoxReddit));
 
         myAdapter = new ModuleAdapter(this, modules);
 
@@ -202,6 +203,10 @@ public class AddWidgets extends AppCompatActivity implements ModuleAdapter.ItemC
                         HashMap<String, Object> clock = new HashMap<>();
                         clock.put("enabled", "false");
                         modules.put("clock", clock);
+
+                        HashMap<String, Object> reddit = new HashMap<>();
+                        reddit.put("enabled", "false");
+                        reddit.put("reddit", reddit);
 
                         HashMap<String, Object> date = new HashMap<>();
                         date.put("enabled", "false");
