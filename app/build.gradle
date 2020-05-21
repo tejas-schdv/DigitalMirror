@@ -34,4 +34,17 @@ dependencies {
     implementation 'com.github.androdocs:Simple-HTTP-Request:v1.0'
 
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+
+    //Retrofit XMLConverter
+    implementation ('com.squareup.retrofit2:converter-simplexml:2.2.0')
+            {
+                exclude group: 'xpp3', module: 'xpp3'
+                exclude group: 'stax', module: 'stax-api'
+                exclude group: 'stax', module: 'stax'
+            }
 }

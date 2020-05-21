@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +28,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
 
     private ArrayList<Module> modules;
     ItemClicked activity;
+    String uid = "default";
+
 
 
     public interface ItemClicked{
@@ -36,6 +40,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
     public ModuleAdapter(Context context, ArrayList<Module>list){
         modules = list;
         activity = (ItemClicked) context;
+        if(GoogleSignIn.getLastSignedInAccount(context) != null) {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
+            uid = account.getId();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -80,7 +88,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    database = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("enabled");
+                    database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("clock").child("enabled");
                     if(isChecked){
                         database.setValue("true");
                     }
@@ -91,7 +99,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
             });
 
             //read checkbox value from database
-            database = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("enabled");
+            database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("clock").child("enabled");
             database.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -113,7 +121,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    database = FirebaseDatabase.getInstance().getReference().child("modules").child("weather").child("enabled");
+                    database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("weather").child("enabled");
                     if(isChecked){
                         database.setValue("true");
                     }
@@ -124,7 +132,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
             });
 
             //read checkbox value from database
-            database = FirebaseDatabase.getInstance().getReference().child("modules").child("weather").child("enabled");
+            database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("weather").child("enabled");
             database.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -146,7 +154,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    database = FirebaseDatabase.getInstance().getReference().child("modules").child("date").child("enabled");
+                    database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("date").child("enabled");
                     if(isChecked){
                         database.setValue("true");
                     }
@@ -157,7 +165,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
             });
 
             //read checkbox value from database
-            database = FirebaseDatabase.getInstance().getReference().child("modules").child("date").child("enabled");
+            database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("date").child("enabled");
             database.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -179,7 +187,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("enabled");
+                    database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("enabled");
                     if(isChecked){
                         database.setValue("true");
                     }
@@ -190,7 +198,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
             });
 
             //read checkbox value from database
-            database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("enabled");
+            database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("enabled");
             database.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -205,6 +213,40 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
                 }
             });
         }
+        else if(modules.get(position).getLogo().equals("reddit")){
+            holder.ivLogo.setImageResource(R.drawable.chat);
+
+            //write checkbox value to database
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("reddit").child("enabled");
+                    if(isChecked){
+                        database.setValue("true");
+                    }
+                    else{
+                        database.setValue("false");
+                    }
+                }
+            });
+
+            //read checkbox value from database
+            database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("reddit").child("enabled");
+            database.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue().toString().equals("true")) {
+                        holder.checkBox.setChecked(true);
+                    } else {
+                        holder.checkBox.setChecked(false);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+
 
 
 

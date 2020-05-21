@@ -140,5 +140,28 @@
         android:textColor="@android:color/white"
         android:text="No upcoming events" />
 
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        app:srcCompat="@drawable/redditlogo" />
+
+    <TextView
+        android:id="@+id/tvRedditFrontpage"
+        android:layout_width="800dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_above="@+id/btnSettings"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="-13dp"
+        android:gravity="center"
+        android:text="current news"
+        android:textColor="@android:color/white"
+        android:textSize="25dp"/>
+
 
 </RelativeLayout>

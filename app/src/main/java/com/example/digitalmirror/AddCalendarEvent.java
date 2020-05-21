@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,6 +37,8 @@ public class AddCalendarEvent extends AppCompatActivity implements AdapterView.O
     Spinner spinner;
     DatabaseReference database, databaseEdit;
 
+    String uid = "default";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -52,12 +56,18 @@ public class AddCalendarEvent extends AppCompatActivity implements AdapterView.O
         etEventTitle = findViewById(R.id.etEventTitle);
         etEventDescription = findViewById(R.id.etEventDescription);
 
+        if(isSignedIn()) {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            uid = account.getId();
+
+        }
+
         spinner = findViewById(R.id.spinnerColor);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.colors_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
+        database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
 
         //editing existing event
         Bundle bundle = getIntent().getExtras();
@@ -92,7 +102,7 @@ public class AddCalendarEvent extends AppCompatActivity implements AdapterView.O
                     String editEventDescription = etEventDescription.getText().toString();
 
                     String editID = stringID;
-                    databaseEdit = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events").child(editID);
+                    databaseEdit = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events").child(editID);
 
                     String editColor = String.valueOf(spinner.getSelectedItem());
                     String editColorLower = editColor.toLowerCase();
@@ -166,5 +176,9 @@ public class AddCalendarEvent extends AppCompatActivity implements AdapterView.O
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
 
+    }
+
+    public boolean isSignedIn() {
+        return GoogleSignIn.getLastSignedInAccount(this) != null;
     }
 }

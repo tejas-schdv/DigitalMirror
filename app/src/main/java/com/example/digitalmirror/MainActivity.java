@@ -7,16 +7,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androdocs.httprequest.HttpRequest;
-import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,11 +29,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import retrofit2.Retrofit;
+
+import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.digitalmirror.model.Feed;
+import com.example.digitalmirror.model.children.Children;
 
 public class MainActivity extends AppCompatActivity {
     //weather variables
@@ -40,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
     String CITY, STATE, ADDRESS; //= "santa paula,ca,us";
     String API = "ebe86c447a46a73e12d63b0def7ba170";
     ImageView ivWeather, ivWind;
-    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate, tvEventsToday, tvEventsTodayDivider, tvEventsTodayList;
+    TextView tvStatus, tvTemp, tvTempMin, tvTempMax, tvWind, clock, tvDate, tvEventsToday, tvEventsTodayDivider, tvEventsTodayList, tvRedditNews;
 
     Button btnSettings, btnSetAddress;
+    String uid = "default";
+    private static final String BASE_URL = "https://www.reddit.com/r/news/";
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +67,19 @@ public class MainActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        //START GOOGLE STUFF
+        boolean check = false;
+
+
+        if(isSignedIn()) {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            uid = account.getId();
+
+        }
+        //END GOOGLE STUFF
+
         //START WEATHER MODULE
-        databaseWeather = FirebaseDatabase.getInstance().getReference().child("modules").child("weather");
+        databaseWeather = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("weather");
         ivWeather = findViewById(R.id.ivWeather);
         ivWind = findViewById(R.id.ivWind);
 
@@ -118,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         clock = findViewById(R.id.tvClock);
         clock.setText(currentTime);
 
-        databaseClock = FirebaseDatabase.getInstance().getReference().child("modules").child("clock").child("enabled");
+        databaseClock = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("clock").child("enabled");
         databaseClock.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -242,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
         String dateForm = dayOfWeek + ", " + month + " " + dayNumber + ", " + yearNumber;
         tvDate.setText(dateForm);
 
-        databaseDate = FirebaseDatabase.getInstance().getReference().child("modules").child("date");
+        databaseDate = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("date");
         DatabaseReference dbDateEnabled = databaseDate.child("enabled");
         dbDateEnabled.addValueEventListener(new ValueEventListener() {
             @Override
@@ -264,14 +289,14 @@ public class MainActivity extends AppCompatActivity {
         //END DATE MODULE
 
         //START CALENDAR MODULE
-        databaseCalendar = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar");
+        databaseCalendar = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar");
         tvEventsToday = findViewById(R.id.tvEventsToday);
         tvEventsTodayDivider = findViewById(R.id.tvEventsTodayDivider);
         tvEventsTodayList = findViewById(R.id.tvEventsTodayList);
         Date todaysDate = new Date();
         final ArrayList<String> todaysEvents = new ArrayList<>();
 
-        DatabaseReference databaseCalendarEvents = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
+        DatabaseReference databaseCalendarEvents = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
 
         String month2 = new SimpleDateFormat("MM").format(todaysDate);
         int intMonth = Integer.parseInt(month2);
@@ -366,9 +391,41 @@ public class MainActivity extends AppCompatActivity {
         //END EMAIL MODULE
 
 
-        //The above done by tuesday
-
         //START NEWS MODULE
+        tvRedditNews = findViewById(R.id.tvRedditFrontpage);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RedditAPI redditAPI = retrofit.create(RedditAPI.class);
+        Call<Feed> call = redditAPI.getData();
+
+        call.enqueue(new Callback<Feed>() {
+            @Override
+            public void onResponse(Call<Feed> call, Response<Feed> response) {
+
+                String content = "";
+                ArrayList<Children> childrenList = response.body().getData().getChildren();
+                Random rand = new Random();
+                int rand_int1 = rand.nextInt(10);
+                for( int i = 0; i<10; i++){
+                    content = "";
+                    content = childrenList.get(rand_int1).getData().getTitle();
+                    tvRedditNews.setText(content);
+                    content = "";
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Feed> call, Throwable t) {
+                Log.e(TAG, "onFailure: Something went wrong: " + t.getMessage() );
+                Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         //END NEWS MODULE
 
         //START NOTIFICATION MODULE
@@ -446,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             } catch (JSONException e) {
-                Toast toast=Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_SHORT);
+                Toast toast=Toast.makeText(getApplicationContext(),"ERROR: Unable to retrieve weather info",Toast.LENGTH_SHORT);
                 toast.show();
                 //findViewById(R.id.loader).setVisibility(View.GONE);
                 //findViewById(R.id.errorText).setVisibility(View.VISIBLE);
@@ -458,7 +515,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<String> getTodaysEvents(java.util.Date dateGiven){
         final ArrayList<String> todaysEvents = new ArrayList<>();
 
-        database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
+        database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
 
         String month = new SimpleDateFormat("MM").format(dateGiven);
         int intMonth = Integer.parseInt(month);
@@ -503,5 +560,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return todaysEvents;
+    }
+
+    public boolean isSignedIn() {
+        return GoogleSignIn.getLastSignedInAccount(this) != null;
     }
 }

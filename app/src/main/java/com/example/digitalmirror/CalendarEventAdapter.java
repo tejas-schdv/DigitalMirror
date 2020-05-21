@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 
 public class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdapter.ViewHolder> {
     DatabaseReference database;
+    String uid = "default";
 
 
     private ArrayList<CalendarEvent> calendarEvents;
@@ -40,6 +43,11 @@ public class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdap
     public CalendarEventAdapter(Context context, ArrayList<CalendarEvent>list){
         calendarEvents = list;
         activity = (ItemClicked) context;
+
+        if(GoogleSignIn.getLastSignedInAccount(context) != null) {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
+            uid = account.getId();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -96,7 +104,7 @@ public class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdap
             holder.ivDot.setImageResource(R.drawable.orange);
         }
 
-        database = FirebaseDatabase.getInstance().getReference().child("modules").child("calendar").child("events");
+        database = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("modules").child("calendar").child("events");
         holder.btnDeleteEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
